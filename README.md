@@ -7,7 +7,7 @@
 - 🚦 This is not the final model.
 
 ### 🕸 Replicate
-https://replicate.com/camenduru/animatediff-lightning-4-step
+https://replicate.com/camenduru/open-sora
 
 ### 🧬 Code
 https://github.com/hpcaitech/Open-Sora
