@@ -38,13 +38,13 @@ class Predictor(BasePredictor):
             num_sampling_steps=100,
             cfg_scale=7.0,
         )
-        dtype = "fp16"
+        self.dtype = "fp16"
 
         torch.set_grad_enabled(False)
         torch.backends.cuda.matmul.allow_tf32 = True
         torch.backends.cudnn.allow_tf32 = True
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        dtype = to_torch_dtype(dtype)
+        self.dtype = to_torch_dtype(self.dtype)
 
         input_size = (num_frames, *image_size)
         self.vae = build_module(self.vae, MODELS)
@@ -57,12 +57,12 @@ class Predictor(BasePredictor):
             in_channels=self.vae.out_channels,
             caption_channels=self.text_encoder.output_dim,
             model_max_length=self.text_encoder.model_max_length,
-            dtype=dtype,
+            dtype=self.dtype,
             enable_sequence_parallelism=False,
         )
         self.text_encoder.y_embedder = self.model.y_embedder  # hack for classifier-free guidance
-        self.vae = self.vae.to(self.device, dtype).eval()
-        self.model = self.model.to(self.device, dtype).eval()
+        self.vae = self.vae.to(self.device, self.dtype).eval()
+        self.model = self.model.to(self.device, self.dtype).eval()
         self.scheduler = build_module(self.scheduler, SCHEDULERS)
     def predict(
         self,
@@ -78,6 +78,6 @@ class Predictor(BasePredictor):
             prompts=prompts,
             device=self.device
         )
-        samples = self.vae.decode(samples.to(dtype))
+        samples = self.vae.decode(samples.to(self.dtype))
         save_sample(samples[0], fps=self.fps, save_path='/content/output')
         return Path('/content/output.mp4')
