@@ -19,4 +19,4 @@ https://hpc-ai.com/blog/open-sora-v1.0
 ![Screenshot 2024-03-22 062832](https://github.com/camenduru/open-sora-replicate/assets/54370274/4ef8c951-2a1b-489b-aad0-29fcb946eae0)
 
 ### 🏢 Sponsor
-https://modelslab.com
+https://replicate.com
